@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import lombok.AllArgsConstructor;
 import one.digitalinnovation.personapi.dto.request.PersonDTO;
 import one.digitalinnovation.personapi.dto.response.MessageResponseDTO;
 import one.digitalinnovation.personapi.exception.PersonNotFoundException;
@@ -23,14 +24,10 @@ import one.digitalinnovation.personapi.service.PersonService;
 
 @RestController
 @RequestMapping("/api/v1/people")
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PersonController {
 
     private final PersonService personService;
-
-    @Autowired
-    public PersonController(final PersonService personService) {
-        this.personService = personService;
-    }
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
