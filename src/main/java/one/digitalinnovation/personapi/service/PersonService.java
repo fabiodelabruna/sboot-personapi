@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import one.digitalinnovation.personapi.dto.request.PersonDTO;
 import one.digitalinnovation.personapi.dto.response.MessageResponseDTO;
+import one.digitalinnovation.personapi.exception.PersonNotFoundException;
 import one.digitalinnovation.personapi.mapper.PersonMapper;
 import one.digitalinnovation.personapi.model.Person;
 import one.digitalinnovation.personapi.repository.PersonRepository;
@@ -17,7 +18,7 @@ public class PersonService {
 
     private final PersonMapper personMapper = PersonMapper.INSTANCE;
 
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
     @Autowired
     public PersonService(final PersonRepository personRepository) {
@@ -33,6 +34,11 @@ public class PersonService {
     public List<PersonDTO> listAll() {
         final List<Person> all = personRepository.findAll();
         return all.stream().map(personMapper::toDTO).collect(Collectors.toList());
+    }
+
+    public PersonDTO findById(final Long id) throws PersonNotFoundException {
+        final Person person = personRepository.findById(id).orElseThrow(() -> new PersonNotFoundException(id));
+        return personMapper.toDTO(person);
     }
 
 }
