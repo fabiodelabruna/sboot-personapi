@@ -28,7 +28,15 @@ public class PersonService {
     public MessageResponseDTO createPerson(final PersonDTO personDTO) {
         final Person personToSave = personMapper.toModel(personDTO);
         final Person savedPerson = personRepository.save(personToSave);
-        return MessageResponseDTO.builder().message("Created person with ID " + savedPerson.getId()).build();
+        return createMessageResponse(savedPerson.getId(), "Created person with ID ");
+    }
+
+    public MessageResponseDTO updateById(final Long id, final PersonDTO personDTO) throws PersonNotFoundException {
+        verifyIfExistis(id);
+
+        final Person personToUpdate = personMapper.toModel(personDTO);
+        final Person updatedPerson = personRepository.save(personToUpdate);
+        return createMessageResponse(updatedPerson.getId(), "Updated person with ID ");
     }
 
     public void deleteById(final Long id) throws PersonNotFoundException {
@@ -48,6 +56,10 @@ public class PersonService {
 
     private Person verifyIfExistis(final Long id) throws PersonNotFoundException {
         return personRepository.findById(id).orElseThrow(() -> new PersonNotFoundException(id));
+    }
+
+    private MessageResponseDTO createMessageResponse(final Long id, final String message) {
+        return MessageResponseDTO.builder().message(message + id).build();
     }
 
 }
