@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import one.digitalinnovation.personapi.dto.MessageResponseDTO;
-import one.digitalinnovation.personapi.model.Person;
+import javax.validation.Valid;
+
+import one.digitalinnovation.personapi.dto.request.PersonDTO;
+import one.digitalinnovation.personapi.dto.response.MessageResponseDTO;
 import one.digitalinnovation.personapi.service.PersonService;
 
 @RestController
@@ -25,8 +27,8 @@ public class PersonController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public MessageResponseDTO createPerson(@RequestBody Person person) {
-        return personService.createPerson(person);
+    public MessageResponseDTO createPerson(@RequestBody @Valid final PersonDTO personDTO) {
+        return personService.createPerson(personDTO);
     }
 
 }
